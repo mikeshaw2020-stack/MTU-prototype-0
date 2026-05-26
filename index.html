@@ -38,6 +38,26 @@
       h1, h2 { margin: 0 0 10px; }
       p { margin: 0; color: var(--muted); line-height: 1.5; }
 
+      .active-room-status {
+        margin-top: 12px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: #f7fbff;
+        font-size: 13px;
+        color: #3f546d;
+      }
+
+      .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #7fa4cf;
+      }
+
       .room-grid {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -101,6 +121,34 @@
       .recovery-theme h2 { letter-spacing: 0.015em; font-weight: 550; }
       .recovery-theme p { line-height: 1.65; }
 
+      .room-note {
+        margin-top: 16px;
+      }
+
+      .room-note label {
+        display: block;
+        font-size: 13px;
+        color: #41556e;
+        margin-bottom: 6px;
+      }
+
+      .room-note textarea {
+        width: 100%;
+        min-height: 80px;
+        resize: vertical;
+        border: 1px solid #cbd9e8;
+        border-radius: 10px;
+        padding: 10px;
+        font: inherit;
+        color: var(--text);
+        background: rgba(255, 255, 255, 0.8);
+      }
+
+      .room-note textarea:focus {
+        outline: 2px solid #d8e8fb;
+        border-color: #b8cde5;
+      }
+
       @media (max-width: 640px) {
         .container { padding: 14px; }
         .card { border-radius: 14px; padding: 18px; }
@@ -113,6 +161,10 @@
       <section id="hub" class="card">
         <h1>MTU Prototype 0</h1>
         <p>A calm home hub for moving between four simple room experiences.</p>
+        <div class="active-room-status" aria-live="polite">
+          <span class="status-dot"></span>
+          <span>Active room: <strong id="active-room-label">Hub</strong></span>
+        </div>
 
         <div class="room-grid">
           <article class="room-tile">
@@ -146,30 +198,48 @@
       <section id="explorer" class="card room-screen hidden explorer-theme">
         <h2>Explorer</h2>
         <p>Curious, open space for discovery and new directions.</p>
+        <div class="room-note">
+          <label for="note-explorer">Quick room note</label>
+          <textarea id="note-explorer" placeholder="Write a quick thought from Explorer..."></textarea>
+        </div>
         <button class="return-btn">Return to hub</button>
       </section>
 
       <section id="builder" class="card room-screen hidden builder-theme">
         <h2>Builder</h2>
         <p>Grounded, productive focus for moving ideas into action.</p>
+        <div class="room-note">
+          <label for="note-builder">Quick room note</label>
+          <textarea id="note-builder" placeholder="Write a quick thought from Builder..."></textarea>
+        </div>
         <button class="return-btn">Return to hub</button>
       </section>
 
       <section id="business" class="card room-screen hidden business-theme">
         <h2>Business</h2>
         <p>Clean, modern operations view for practical decision-making.</p>
+        <div class="room-note">
+          <label for="note-business">Quick room note</label>
+          <textarea id="note-business" placeholder="Write a quick thought from Business..."></textarea>
+        </div>
         <button class="return-btn">Return to hub</button>
       </section>
 
       <section id="recovery" class="card room-screen hidden recovery-theme">
         <h2>Recovery</h2>
         <p>Calming, slower pace to reset and restore before the next step.</p>
+        <div class="room-note">
+          <label for="note-recovery">Quick room note</label>
+          <textarea id="note-recovery" placeholder="Write a quick thought from Recovery..."></textarea>
+        </div>
         <button class="return-btn">Return to hub</button>
       </section>
     </main>
 
     <script>
       const hub = document.getElementById('hub');
+      const activeRoomLabel = document.getElementById('active-room-label');
+      const roomTitles = { explorer: 'Explorer', builder: 'Builder', business: 'Business', recovery: 'Recovery' };
       const rooms = ['explorer', 'builder', 'business', 'recovery'].map((id) =>
         document.getElementById(id)
       );
@@ -177,12 +247,14 @@
       function showHub() {
         hub.classList.remove('hidden');
         rooms.forEach((room) => room.classList.add('hidden'));
+        activeRoomLabel.textContent = 'Hub';
       }
 
       function showRoom(id) {
         hub.classList.add('hidden');
         rooms.forEach((room) => room.classList.add('hidden'));
         document.getElementById(id).classList.remove('hidden');
+        activeRoomLabel.textContent = roomTitles[id] || 'Room';
       }
 
       document.querySelectorAll('[data-room]').forEach((button) => {
