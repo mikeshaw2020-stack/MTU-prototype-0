@@ -6,34 +6,25 @@
     <title>MTU Prototype 0</title>
     <style>
       :root {
-        --bg: #eef3f8;
+        --bg: #edf3f8;
         --surface: #ffffff;
-        --surface-soft: #f7faff;
         --text: #243244;
-        --muted: #55667d;
-        --line: #d7e2f0;
-        --accent: #8da9c9;
-        --accent-soft: #e6eef8;
+        --muted: #586b81;
+        --line: #d8e3ef;
         --shadow: 0 10px 28px rgba(25, 47, 77, 0.08);
         font-family: "Inter", "Segoe UI", Arial, sans-serif;
       }
 
-      * {
-        box-sizing: border-box;
-      }
+      * { box-sizing: border-box; }
 
       body {
         margin: 0;
         min-height: 100vh;
-        background: radial-gradient(circle at 20% 10%, #f6f9fe 0%, var(--bg) 58%);
+        background: radial-gradient(circle at 20% 10%, #f7fafe 0%, var(--bg) 58%);
         color: var(--text);
       }
 
-      .container {
-        max-width: 860px;
-        margin: 0 auto;
-        padding: 20px;
-      }
+      .container { max-width: 860px; margin: 0 auto; padding: 20px; }
 
       .card {
         background: var(--surface);
@@ -41,19 +32,11 @@
         border-radius: 16px;
         padding: 22px;
         box-shadow: var(--shadow);
-        transition: opacity 220ms ease, transform 220ms ease;
+        transition: opacity 220ms ease, transform 220ms ease, background 260ms ease;
       }
 
-      h1,
-      h2 {
-        margin: 0 0 10px;
-      }
-
-      p {
-        margin: 0;
-        color: var(--muted);
-        line-height: 1.45;
-      }
+      h1, h2 { margin: 0 0 10px; }
+      p { margin: 0; color: var(--muted); line-height: 1.5; }
 
       .room-grid {
         display: grid;
@@ -65,77 +48,63 @@
       .room-tile {
         border: 1px solid var(--line);
         border-radius: 12px;
-        background: linear-gradient(180deg, #fbfdff 0%, var(--surface-soft) 100%);
         padding: 14px;
+        background: linear-gradient(180deg, #fbfdff 0%, #f6faff 100%);
       }
 
-      .room-tile h3 {
-        margin: 0 0 6px;
-        font-size: 16px;
-      }
-
-      .room-tile p {
-        font-size: 14px;
-        margin-bottom: 10px;
-      }
+      .room-tile h3 { margin: 0 0 6px; font-size: 16px; }
+      .room-tile p { font-size: 14px; margin-bottom: 10px; }
 
       button {
         border: 1px solid transparent;
         border-radius: 10px;
-        background: var(--accent-soft);
+        background: #e7eff9;
         color: var(--text);
         padding: 10px 14px;
         cursor: pointer;
         font-size: 14px;
         transition: background-color 180ms ease, transform 180ms ease;
       }
-
-      button:hover {
-        background: #dae7f8;
-        transform: translateY(-1px);
-      }
+      button:hover { background: #dce9f8; transform: translateY(-1px); }
 
       .voice-placeholder {
         margin-top: 10px;
-        border: 1px dashed #b2c4db;
+        border: 1px dashed #b6c8de;
         border-radius: 12px;
         padding: 14px;
         background: #f6faff;
       }
+      .voice-placeholder strong { display: block; margin-bottom: 4px; }
 
-      .voice-placeholder strong {
-        display: block;
-        margin-bottom: 4px;
-      }
+      .hidden { opacity: 0; transform: translateY(8px); pointer-events: none; position: absolute; }
+      .room-screen { max-width: 700px; }
+      .return-btn { margin-top: 18px; }
 
-      .hidden {
-        opacity: 0;
-        transform: translateY(8px);
-        pointer-events: none;
-        position: absolute;
+      .explorer-theme {
+        background: linear-gradient(145deg, #fcfffe 0%, #eef9f6 100%);
       }
+      .explorer-theme h2 { letter-spacing: 0.02em; font-weight: 650; }
 
-      .room-screen {
-        max-width: 700px;
+      .builder-theme {
+        background: linear-gradient(145deg, #fffdf9 0%, #f8f3ea 100%);
       }
+      .builder-theme h2 { letter-spacing: 0.01em; font-weight: 700; }
 
-      .return-btn {
-        margin-top: 18px;
+      .business-theme {
+        background: linear-gradient(145deg, #fcfdff 0%, #eff4fb 100%);
       }
+      .business-theme h2 { text-transform: uppercase; font-size: 1.2rem; letter-spacing: 0.06em; font-weight: 700; }
+
+      .recovery-theme {
+        background: linear-gradient(145deg, #fdfcff 0%, #f1f2fb 100%);
+      }
+      .recovery-theme h2 { letter-spacing: 0.015em; font-weight: 550; }
+      .recovery-theme p { line-height: 1.65; }
 
       @media (max-width: 640px) {
-        .container {
-          padding: 14px;
-        }
-
-        .card {
-          border-radius: 14px;
-          padding: 18px;
-        }
-
-        .room-grid {
-          grid-template-columns: 1fr;
-        }
+        .container { padding: 14px; }
+        .card { border-radius: 14px; padding: 18px; }
+        .room-grid { grid-template-columns: 1fr; }
       }
     </style>
   </head>
@@ -151,19 +120,16 @@
             <p>Discover ideas and test fresh directions.</p>
             <button data-room="explorer">Open Explorer</button>
           </article>
-
           <article class="room-tile">
             <h3>Builder</h3>
             <p>Shape concepts into practical next steps.</p>
             <button data-room="builder">Open Builder</button>
           </article>
-
           <article class="room-tile">
             <h3>Business</h3>
             <p>Keep work aligned with outcomes and value.</p>
             <button data-room="business">Open Business</button>
           </article>
-
           <article class="room-tile">
             <h3>Recovery</h3>
             <p>Reset energy and prepare for what is next.</p>
@@ -177,27 +143,27 @@
         </div>
       </section>
 
-      <section id="explorer" class="card room-screen hidden">
+      <section id="explorer" class="card room-screen hidden explorer-theme">
         <h2>Explorer</h2>
-        <p>Try new ideas and discover paths to follow.</p>
+        <p>Curious, open space for discovery and new directions.</p>
         <button class="return-btn">Return to hub</button>
       </section>
 
-      <section id="builder" class="card room-screen hidden">
+      <section id="builder" class="card room-screen hidden builder-theme">
         <h2>Builder</h2>
-        <p>Turn concepts into working pieces step by step.</p>
+        <p>Grounded, productive focus for moving ideas into action.</p>
         <button class="return-btn">Return to hub</button>
       </section>
 
-      <section id="business" class="card room-screen hidden">
+      <section id="business" class="card room-screen hidden business-theme">
         <h2>Business</h2>
-        <p>Focus on planning, value, and practical outcomes.</p>
+        <p>Clean, modern operations view for practical decision-making.</p>
         <button class="return-btn">Return to hub</button>
       </section>
 
-      <section id="recovery" class="card room-screen hidden">
+      <section id="recovery" class="card room-screen hidden recovery-theme">
         <h2>Recovery</h2>
-        <p>Pause, reset, and prepare for the next move.</p>
+        <p>Calming, slower pace to reset and restore before the next step.</p>
         <button class="return-btn">Return to hub</button>
       </section>
     </main>
